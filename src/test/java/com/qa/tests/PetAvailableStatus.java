@@ -15,7 +15,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
-public class WeatherInfoTests extends TestBase{
+public class PetAvailableStatus extends TestBase{
 	
 	
 	@BeforeMethod
@@ -25,31 +25,33 @@ public class WeatherInfoTests extends TestBase{
 	
 	@DataProvider
 	public Object[][] getData(){
-		Object testData[][] = TestUtil.getDataFromSheet(TestUtil.WeatherSheetName);
+		Object testData[][] = TestUtil.getDataFromSheet(TestUtil.PetSheetName);
+
 		return testData;
 	}
 	
 	
 	
 	@Test(dataProvider="getData")
-	public void getWeatherDetailsWithCorrectCityNameTest(String city,	String HTTPMethod, String humidity, String temperature,	
+	public void getWeatherDetailsWithCorrectCityNameTest(String pet,	String HTTPMethod, String humidity, String temperature,
 			String weatherdescription, String windspeed,	String winddirectiondegree){
-		
-		//1. define the base url
-		//http://restapi.demoqa.com/utilities/weather/city
+
+        //1. define the URL base
+
+		//https://petstore3.swagger.io
 		RestAssured.baseURI = prop.getProperty("serviceurl");
 		
 		//2. define the http request:
 		RequestSpecification httpRequest = RestAssured.given();
 		
 		//3. make a request/execute the request:
-		Response response = httpRequest.request(Method.GET, "/"+city);
+		Response response = httpRequest.request(Method.GET, "/");
 		
 		//4. get the response body:
 		String responseBody = response.getBody().asString();
 		System.out.println("Response Body is: "+ responseBody);
-		//validate city name or validate the key or value
-		Assert.assertEquals(responseBody.contains(city), true);
+		//validate pet name or validate the pet ID
+		Assert.assertEquals(responseBody.contains(pet), true);
 		
 		//5. get the status code and validate it:
 		int statusCode = response.getStatusCode();
@@ -71,10 +73,10 @@ public class WeatherInfoTests extends TestBase{
 
 		//get the key value by using JsonPath:
 		JsonPath jsonPathValue = response.jsonPath();
-		String cityVal = jsonPathValue.get("City");
-		System.out.println("the value of city is: "+ cityVal);
+		String petVal = jsonPathValue.get("City");
+		System.out.println("the value of city is: "+ petVal);
 		
-		Assert.assertEquals(cityVal, city);
+		Assert.assertEquals(petVal, pet);
 		
 		String temp = jsonPathValue.get("Temperature");
 		System.out.println("the value of Temperature is: "+ temp);
