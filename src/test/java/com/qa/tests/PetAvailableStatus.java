@@ -33,8 +33,8 @@ public class PetAvailableStatus extends TestBase{
 	
 	
 	@Test(dataProvider="getData")
-	public void getWeatherDetailsWithCorrectCityNameTest(String pet,	String HTTPMethod, String humidity, String temperature,
-			String weatherdescription, String windspeed,	String winddirectiondegree){
+	public void getPetDetailsWithCorrectIdNumber(String id)
+	{
 
         //1. define the URL base
 
@@ -51,7 +51,7 @@ public class PetAvailableStatus extends TestBase{
 		String responseBody = response.getBody().asString();
 		System.out.println("Response Body is: "+ responseBody);
 		//validate pet name or validate the pet ID
-		Assert.assertEquals(responseBody.contains(pet), true);
+		Assert.assertEquals(responseBody.contains(id), true);
 		
 		//5. get the status code and validate it:
 		int statusCode = response.getStatusCode();
@@ -73,36 +73,31 @@ public class PetAvailableStatus extends TestBase{
 
 		//get the key value by using JsonPath:
 		JsonPath jsonPathValue = response.jsonPath();
-		String petVal = jsonPathValue.get("City");
-		System.out.println("the value of city is: "+ petVal);
+		String petVal = jsonPathValue.get("Id");
+		System.out.println("the name of pet is: "+ petVal);
 		
-		Assert.assertEquals(petVal, pet);
+		Assert.assertEquals(petVal, id);
 		
-		String temp = jsonPathValue.get("Temperature");
-		System.out.println("the value of Temperature is: "+ temp);
-		Assert.assertEquals(temp, temperature);
+		String temp = jsonPathValue.get("name_1");
+		System.out.println("the name of pet is: "+ temp);
+		//Assert.assertEquals(temp, name_1);
 
 
-		String Humidity = jsonPathValue.get("Humidity");
-		System.out.println("the value of Humidity is: "+ Humidity);
+		String Category = jsonPathValue.get("category");
+		System.out.println("the type of category is: "+ Category);
 
-		String WeatherDescription = jsonPathValue.get("WeatherDescription");
-		System.out.println("the value of WeatherDescription is: "+ WeatherDescription);
+		String StatusDescription = jsonPathValue.get("StatusDescription");
+		System.out.println("the status description is: "+ StatusDescription);
 
-		String WindSpeed = jsonPathValue.get("WindSpeed");
-		System.out.println("the value of WindSpeed is: "+ WindSpeed);
+		String PhotoUrl = jsonPathValue.get("photo_url");
+		System.out.println("the photourl is: "+ PhotoUrl);
 
-		String WindDirectionDegree = jsonPathValue.get("WindDirectionDegree");
-		System.out.println("the value of WindDirectionDegree is: "+ WindDirectionDegree);
+		String PhotoUrl2 = jsonPathValue.get("photo_url2");
+		System.out.println("the photo url 2  is: "+ PhotoUrl2);
 
 		
 		
 	}
-	
-	
-	
-	
-	
 	
 	
 
